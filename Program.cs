@@ -6,7 +6,7 @@ namespace translatorAPI
     class Program
     {
         static string endpoint = "https://api.cognitive.microsofttranslator.com";
-        static string subscriptionKey = "_____428f95b165ea59_____";
+        static string subscriptionKey = "_______428f95b165ea______";
         static string region = "___eastasia___";
         static void Main(string[] args)
         {
@@ -14,12 +14,18 @@ namespace translatorAPI
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             //translate wording
             var words = "Hello World!";
+            Console.Write("請輸入要翻譯的文字:");
+            words = Console.ReadLine();
             //show 
-            Console.WriteLine(words);
+            Console.WriteLine("source : " + words);
             //call tranlator API
             var ret = MakeTranslator(words);
             //dsiplay
-            Console.WriteLine(ret[0].translations[0].text);
+            foreach (var item in ret[0].translations)
+            {
+                Console.WriteLine("----------");
+                Console.WriteLine(item.text);
+            }
         }
 
         static dynamic MakeTranslator(string msg)
@@ -37,7 +43,7 @@ namespace translatorAPI
             var content =
                new StringContent(JsonString, System.Text.Encoding.UTF8, "application/json");
             var response = client.PostAsync(uri, content).Result;
-            var JSON=response.Content.ReadAsStringAsync().Result;
+            var JSON = response.Content.ReadAsStringAsync().Result;
             return Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(JSON);
         }
     }
